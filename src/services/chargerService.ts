@@ -1,5 +1,7 @@
-// src/services/chargerService.ts
-
+/**
+ * Domain model representing a normalized Electric Vehicle Charger.
+ * This interface is used throughout the application UI.
+ */
 export interface Charger {
   id: string;
   address: string;
@@ -7,10 +9,14 @@ export interface Charger {
   connectorType: string;
   price: string;
   outlets: number;
-  coordinates: [number, number]; // [latitud, longitud]
+  coordinates: [number, number]; /** [Latitude, Longitude] */
 }
 
-// Interfaz ajustada a la respuesta REAL de la API
+/**
+ * Raw API Response Interface.
+ * Mirrors the specific field names returned by the OpenData Valencia API.
+ * Note: Field names correspond to the source database columns (e.g., 'emplazamie', 'potenc_ia').
+ */
 interface ApiRecord {
   record: {
     id: string;
@@ -21,7 +27,6 @@ interface ApiRecord {
       precio_iv?: string;
       toma?: string | number;
 
-      // Coordenadas
       geo_point_2d?: {
         lat: number;
         lon: number;
@@ -30,6 +35,12 @@ interface ApiRecord {
   };
 }
 
+/**
+ * Fetches charger data from the Valencia Open Data API.
+ * Transforms the raw API response into a clean 'Charger' array for the UI.
+ *
+ * @returns {Promise<Charger[]>} A list of normalized chargers. Returns an empty array on failure.
+ */
 export const fetchChargers = async (): Promise<Charger[]> => {
   const API_URL = 'https://valencia.opendatasoft.com/api/v2/catalog/datasets/carregadors-vehicles-electrics-cargadores-vehiculos-electricos/records/?limit=50';
 
@@ -41,6 +52,10 @@ export const fetchChargers = async (): Promise<Charger[]> => {
 
     return data.records.map((item: ApiRecord) => {
       const f = item.record.fields;
+
+      /**
+       * Ensures we always have a valid number >= 1, even if the API sends "0" or invalid strings.
+       */
       const rawOutlets = Number(f.toma);
       const safeOutlets = isNaN(rawOutlets) || rawOutlets < 1 ? 1 : rawOutlets;
 
@@ -52,7 +67,9 @@ export const fetchChargers = async (): Promise<Charger[]> => {
         price: f.precio_iv || 'Check App',
         outlets: safeOutlets,
 
-        // Verificamos que existan coordenadas, si no, fallback al centro
+        /**
+         * Falls back to the center of Valencia if coordinates are missing to prevent map crashes.
+         */
         coordinates: f.geo_point_2d
           ? [f.geo_point_2d.lat, f.geo_point_2d.lon]
           : [39.4699, -0.3763]

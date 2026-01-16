@@ -8,9 +8,10 @@ import { MapPage } from './pages/MapPage';
 function App() {
   return (
     <BrowserRouter>
+      {/** Flex container ensures the Footer always stays at the bottom of the viewport */}
       <div className="min-h-screen bg-slate-900 flex flex-col">
-        <Navbar /> 
-        
+        <Navbar />
+
         <Routes>
           <Route path="/" element={
             <>
@@ -20,9 +21,10 @@ function App() {
           } />
           <Route path="/map" element={<MapPage />} />
         </Routes>
-        
+
+        {/** Global Footer */}
         <footer className="bg-slate-950 py-6 text-center text-slate-600 text-sm border-t border-slate-900 mt-auto">
-          <p>© 2026 EV Chargers. Todos los derechos reservados.</p>
+          <p>© 2026 EV Chargers. All rights reserved.</p>
         </footer>
       </div>
     </BrowserRouter>
