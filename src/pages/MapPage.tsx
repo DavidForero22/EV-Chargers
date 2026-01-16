@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Zap, BatteryCharging, Map as MapIcon, Info } from 'lucide-react';
+import { Zap, BatteryCharging, Map as MapIcon, Info, Euro } from 'lucide-react';
 import { fetchChargers, type Charger } from '../services/chargerService';
 import L from 'leaflet';
 
@@ -88,13 +88,22 @@ export const MapPage: React.FC = () => {
                                             {charger.address}
                                         </h3>
                                         <div className="space-y-2 mb-4">
+                                            {/* Potencia */}
                                             <div className="flex items-center gap-2 text-slate-700">
                                                 <BatteryCharging className="w-4 h-4 text-emerald-600" />
                                                 <span className="text-sm font-medium">{charger.power}</span>
                                             </div>
+
+                                            {/* Tipo de Conector */}
                                             <div className="flex items-center gap-2 text-slate-700">
                                                 <Zap className="w-4 h-4 text-blue-600" />
                                                 <span className="text-sm font-medium">{charger.connectorType}</span>
+                                            </div>
+
+                                            {/* Precio */}
+                                            <div className="flex items-center gap-2 text-slate-700">
+                                                <Euro className="w-4 h-4 text-amber-500" />
+                                                <span className="text-sm font-medium">{charger.price}</span>
                                             </div>
                                         </div>
                                         <button className="w-full bg-slate-900 hover:bg-emerald-600 hover:text-white text-slate-100 py-2 rounded-lg text-sm font-bold transition-all duration-200 shadow-md">
