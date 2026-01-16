@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Zap, BatteryCharging, Map as MapIcon, Info, Euro } from 'lucide-react';
+// 1. Añadimos el icono 'Navigation' a los imports
+import { Zap, BatteryCharging, Map as MapIcon, Info, Euro, Navigation } from 'lucide-react';
 import { fetchChargers, type Charger } from '../services/chargerService';
 import L from 'leaflet';
 
-// Iconos de Leaflet
 import iconMarker from 'leaflet/dist/images/marker-icon.png';
 import iconRetina from 'leaflet/dist/images/marker-icon-2x.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -48,7 +48,6 @@ export const MapPage: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Tarjeta de Estado */}
                     <div className="bg-slate-800 border border-slate-700 p-4 rounded-xl flex items-center gap-4 shadow-lg min-w-[250px]">
                         <div className="bg-emerald-500/10 p-3 rounded-lg">
                             <Zap className="w-6 h-6 text-emerald-400" />
@@ -62,7 +61,6 @@ export const MapPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Contenedor del Mapa con Margen y Bordes */}
                 <div className="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-0">
                     <MapContainer
                         center={[39.4699, -0.3763]}
@@ -82,26 +80,24 @@ export const MapPage: React.FC = () => {
                                 icon={customIcon}
                             >
                                 <Popup>
-                                    {/* Popup personalizado con estilos Tailwind dentro */}
-                                    <div className="p-1 min-w-[200px] font-sans">
-                                        <h3 className="font-bold text-slate-900 text-base mb-2 border-b border-slate-200 pb-2">
+                                    <div className="p-1 min-w-[220px] font-sans">
+                                        <h3 className="font-bold text-slate-900 text-base mb-2 border-b border-slate-200 pb-2 pr-2">
                                             {charger.address}
                                         </h3>
-                                        <div className="space-y-2 mb-4">
-                                            {/* Potencia + Nº de Tomas */}
-                                            <div className="flex items-center justify-between text-slate-700 mt-2">
+                                        
+                                        <div className="space-y-3 mb-4">
+                                            {/* Potencia + Tomas */}
+                                            <div className="flex items-center justify-between text-slate-700">
                                                 <div className="flex items-center gap-2">
                                                     <BatteryCharging className="w-4 h-4 text-emerald-600" />
                                                     <span className="text-sm font-medium">{charger.power}</span>
                                                 </div>
-
-
-                                                <span className="ml-auto text-[10px] bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 text-slate-600 font-extrabold shadow-sm">
+                                                <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 text-slate-500 font-bold">
                                                     {charger.outlets} {charger.outlets > 1 ? 'TOMAS' : 'TOMA'}
                                                 </span>
                                             </div>
 
-                                            {/* Tipo de Conector */}
+                                            {/* Conector */}
                                             <div className="flex items-center gap-2 text-slate-700">
                                                 <Zap className="w-4 h-4 text-blue-600" />
                                                 <span className="text-sm font-medium">{charger.connectorType}</span>
@@ -113,9 +109,25 @@ export const MapPage: React.FC = () => {
                                                 <span className="text-sm font-medium">{charger.price}</span>
                                             </div>
                                         </div>
-                                        <button className="w-full bg-slate-900 hover:bg-emerald-600 hover:text-white text-slate-100 py-2 rounded-lg text-sm font-bold transition-all duration-200 shadow-md">
-                                            RESERVE
-                                        </button>
+
+                                        {/* Botones de Acción */}
+                                        <div className="flex gap-2 mt-3 pt-2 border-t border-slate-100">
+                                            {/* Botón Principal: Reservar */}
+                                            <button className="flex-1 bg-slate-900 hover:bg-emerald-600 hover:text-white text-slate-100 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200 shadow-md">
+                                                RESERVE
+                                            </button>
+
+                                            {/* Botón Secundario: Google Maps */}
+                                            <a 
+                                                href={`https://www.google.com/maps/dir/?api=1&destination=${charger.coordinates[0]},${charger.coordinates[1]}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center justify-center bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 py-2 px-3 rounded-lg transition-colors shadow-sm"
+                                                title="How to get there with Google Maps"
+                                            >
+                                                <Navigation className="w-4 h-4" />
+                                            </a>
+                                        </div>
                                     </div>
                                 </Popup>
                             </Marker>
@@ -123,7 +135,6 @@ export const MapPage: React.FC = () => {
                     </MapContainer>
                 </div>
 
-                {/* info extra al pie del mapa */}
                 <div className="mt-4 flex items-center gap-2 text-slate-500 text-sm">
                     <Info className="w-4 h-4" />
                     <span>Data provided by OpenData Valencia. Updated in real time.</span>
