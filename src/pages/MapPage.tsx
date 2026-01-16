@@ -93,7 +93,7 @@ export const MapPage: React.FC = () => {
                                                     <span className="text-sm font-medium">{charger.power}</span>
                                                 </div>
                                                 <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 text-slate-500 font-bold">
-                                                    {charger.outlets} {charger.outlets > 1 ? 'TOMAS' : 'TOMA'}
+                                                    {charger.outlets} {charger.outlets > 1 ? 'CONNECTORS' : 'CONNECTOR'}
                                                 </span>
                                             </div>
 
