@@ -25,10 +25,10 @@ export const Hero: React.FC = () => {
                         <MapPin className="w-5 h-5" />
                         Search for Charging Points
                     </button>
-                    <button className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center gap-2">
+                    {/* <button className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center gap-2">
                         <ShieldCheck className="w-5 h-5 text-sky-400" />
                         Administrator Access
-                    </button>
+                    </button> */}
                 </div>
 
                 {/* Tarjetas de Estadísticas Rápidas (Dummy Data) */}
@@ -58,14 +58,14 @@ export const Hero: React.FC = () => {
 };
 
 // Sub-componente simple para las tarjetas
-const StatCard = ({ label, value, color, icon }: { label: string, value: string, color: string, icon: React.ReactNode }) => (
-    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl flex items-center gap-4 hover:border-emerald-500/30 transition">
-        <div className="bg-slate-700/50 p-3 rounded-lg">
-            {icon}
-        </div>
-        <div className="text-left">
-            <p className={`text-2xl font-bold ${color}`}>{value}</p>
-            <p className="text-slate-400 text-sm">{label}</p>
-        </div>
-    </div>
-);
+// const StatCard = ({ label, value, color, icon }: { label: string, value: string, color: string, icon: React.ReactNode }) => (
+//     <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-6 rounded-xl flex items-center gap-4 hover:border-emerald-500/30 transition">
+//         <div className="bg-slate-700/50 p-3 rounded-lg">
+//             {icon}
+//         </div>
+//         <div className="text-left">
+//             <p className={`text-2xl font-bold ${color}`}>{value}</p>
+//             <p className="text-slate-400 text-sm">{label}</p>
+//         </div>
+//     </div>
+// );
