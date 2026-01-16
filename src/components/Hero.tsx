@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, BatteryCharging, ShieldCheck, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Hero: React.FC = () => {
     return (
@@ -21,10 +22,10 @@ export const Hero: React.FC = () => {
                 </p>
 
                 <div className="flex flex-col md:flex-row justify-center gap-4 mb-16">
-                    <button className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold py-3 px-8 rounded-full transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                    <Link to="/map" className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold py-3 px-8 rounded-full transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
                         <MapPin className="w-5 h-5" />
                         Search for Charging Points
-                    </button>
+                    </Link>
                     {/* <button className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium py-3 px-8 rounded-full transition flex items-center justify-center gap-2">
                         <ShieldCheck className="w-5 h-5 text-sky-400" />
                         Administrator Access
