@@ -1,5 +1,3 @@
-// src/services/chargerService.ts
-
 export interface Charger {
     id: string;
     address: string;
@@ -9,7 +7,6 @@ export interface Charger {
     coordinates: [number, number]; // [latitud, longitud]
 }
 
-// Interfaz cruda de la respuesta de OpenDataSoft
 interface ApiRecord {
     record: {
         id: string;
@@ -22,7 +19,6 @@ interface ApiRecord {
                 lat: number;
                 lon: number;
             };
-            // A veces viene como array en otras APIs, prevenimos
             geo_shape?: {
                 geometry: {
                     coordinates: [number, number];
@@ -37,7 +33,7 @@ export const fetchChargers = async (): Promise<Charger[]> => {
 
     try {
         const response = await fetch(API_URL);
-        if (!response.ok) throw new Error('Error al conectar con el servidor de datos');
+        if (!response.ok) throw new Error('Error connecting to the data server');
 
         const data = await response.json();
 
@@ -45,14 +41,13 @@ export const fetchChargers = async (): Promise<Charger[]> => {
             const f = item.record.fields;
             return {
                 id: item.record.id,
-                address: f.direccion || 'Ubicación desconocida',
-                power: f.potencia || 'No especificado',
-                connectorType: f.tipo_conector || 'Estándar',
-                price: f.precio || 'Consultar app',
-                // Ojo: OpenData devuelve lat/lon, Leaflet usa [lat, lon]
+                address: f.direccion || 'Location unknown',
+                power: f.potencia || 'Not specified',
+                connectorType: f.tipo_conector || 'Standard',
+                price: f.precio || 'Check app',
                 coordinates: f.geo_point_2d
                     ? [f.geo_point_2d.lat, f.geo_point_2d.lon]
-                    : [39.4699, -0.3763] // Fallback al centro de Valencia
+                    : [39.4699, -0.3763]
             };
         });
     } catch (error) {
