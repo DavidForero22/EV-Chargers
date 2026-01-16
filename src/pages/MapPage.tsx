@@ -88,10 +88,17 @@ export const MapPage: React.FC = () => {
                                             {charger.address}
                                         </h3>
                                         <div className="space-y-2 mb-4">
-                                            {/* Potencia */}
-                                            <div className="flex items-center gap-2 text-slate-700">
-                                                <BatteryCharging className="w-4 h-4 text-emerald-600" />
-                                                <span className="text-sm font-medium">{charger.power}</span>
+                                            {/* Potencia + Nº de Tomas */}
+                                            <div className="flex items-center justify-between text-slate-700 mt-2">
+                                                <div className="flex items-center gap-2">
+                                                    <BatteryCharging className="w-4 h-4 text-emerald-600" />
+                                                    <span className="text-sm font-medium">{charger.power}</span>
+                                                </div>
+
+
+                                                <span className="ml-auto text-[10px] bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 text-slate-600 font-extrabold shadow-sm">
+                                                    {charger.outlets} {charger.outlets > 1 ? 'TOMAS' : 'TOMA'}
+                                                </span>
                                             </div>
 
                                             {/* Tipo de Conector */}
