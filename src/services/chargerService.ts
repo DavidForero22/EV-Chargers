@@ -1,22 +1,19 @@
 /**
- * Domain model representing a normalized Electric Vehicle Charger.
- * This interface is used throughout the application UI.
+ * chargerService.ts
  */
+
 export interface Charger {
   id: string;
   address: string;
   power: string;
   connectorType: string;
-  price: string;
+  price: string; // Texto original de la API
   outlets: number;
-  coordinates: [number, number]; /** [Latitude, Longitude] */
+  coordinates: [number, number];
+  pricePerKwh: number; // Precio calculado
+  bookingFee: number;  // Precio de reserva en CÉNTIMOS 
 }
 
-/**
- * Raw API Response Interface.
- * Mirrors the specific field names returned by the OpenData Valencia API.
- * Note: Field names correspond to the source database columns (e.g., 'emplazamie', 'potenc_ia').
- */
 interface ApiRecord {
   record: {
     id: string;
@@ -26,53 +23,49 @@ interface ApiRecord {
       conector?: string;
       precio_iv?: string;
       toma?: string | number;
-
-      geo_point_2d?: {
-        lat: number;
-        lon: number;
-      };
+      geo_point_2d?: { lat: number; lon: number };
     };
   };
 }
 
-/**
- * Fetches charger data from the Valencia Open Data API.
- * Transforms the raw API response into a clean 'Charger' array for the UI.
- *
- * @returns {Promise<Charger[]>} A list of normalized chargers. Returns an empty array on failure.
- */
 export const fetchChargers = async (): Promise<Charger[]> => {
-  const API_URL = 'https://valencia.opendatasoft.com/api/v2/catalog/datasets/carregadors-vehicles-electrics-cargadores-vehiculos-electricos/records/?limit=50';
+  const API_URL = "https://valencia.opendatasoft.com/api/v2/catalog/datasets/carregadors-vehicles-electrics-cargadores-vehiculos-electricos/records/?limit=50";
 
   try {
     const response = await fetch(API_URL);
-    if (!response.ok) throw new Error('Error connecting to the data server');
+    if (!response.ok) throw new Error("Error connecting to the data server");
 
     const data = await response.json();
 
     return data.records.map((item: ApiRecord) => {
       const f = item.record.fields;
-
-      /**
-       * Ensures we always have a valid number >= 1, even if the API sends "0" or invalid strings.
-       */
+      
       const rawOutlets = Number(f.toma);
       const safeOutlets = isNaN(rawOutlets) || rawOutlets < 1 ? 1 : rawOutlets;
 
+      // --- LÓGICA DE PRECIOS REALISTA ---
+      const powerValue = parseInt(f.potenc_ia || "0");
+      const isFastCharger = powerValue >= 40; 
+
+      // Si es carga rápida: 2.99€ reserva / 0.55€ kWh
+      // Si es carga lenta:  1.99€ reserva / 0.29€ kWh
+      const calculatedBookingFee = isFastCharger ? 299 : 199; 
+      const calculatedKwhPrice = isFastCharger ? 0.55 : 0.29;
+
       return {
         id: item.record.id,
-        address: f.emplazamie || 'Location unknown',
-        power: f.potenc_ia || 'Not specified',
-        connectorType: f.conector || 'Standard',
-        price: f.precio_iv || 'Check App',
+        address: f.emplazamie || "Ubicación desconocida",
+        power: f.potenc_ia || "No especificado",
+        connectorType: f.conector || "Estándar",
+        price: f.precio_iv || "Consultar App",
         outlets: safeOutlets,
-
-        /**
-         * Falls back to the center of Valencia if coordinates are missing to prevent map crashes.
-         */
         coordinates: f.geo_point_2d
           ? [f.geo_point_2d.lat, f.geo_point_2d.lon]
-          : [39.4699, -0.3763]
+          : [39.4699, -0.3763],
+        
+        // Campos nuevos para la pasarela
+        pricePerKwh: calculatedKwhPrice,
+        bookingFee: calculatedBookingFee 
       };
     });
   } catch (error) {
