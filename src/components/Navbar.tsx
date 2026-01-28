@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
                         Map
                     </Link>
 
-                    <Link to="/reservations" className="hover:text-emerald-400 transition">
+                    <Link to="/bookings" className="hover:text-emerald-400 transition">
                         My Reservations
                     </Link>
 

@@ -15,7 +15,7 @@ import {
 	ShieldCheck,
 	Zap,
 } from "lucide-react";
-import { type Charger } from "../services/chargerService";
+import { type Charger, saveBooking } from "../services/chargerService";
 
 // IMPORTANTE: Pon aquí tu Public Key de Stripe (empieza por pk_test_)
 const stripePromise = loadStripe("pk_test_TU_CLAVE_PUBLICA_AQUI");
@@ -76,10 +76,10 @@ const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
 			setError(error.message || "Error al procesar el pago.");
 			setIsProcessing(false);
 		} else {
-			console.log("Pago simulado exitoso. ID:", paymentMethod.id);
-			console.log("Cantidad a cobrar:", charger.bookingFee);
+			console.log("Sucessful payment. ID:", paymentMethod.id);
+			console.log("Payment amount:", charger.bookingFee);
+			saveBooking(charger);
 
-			// Simulamos tiempo de red
 			setTimeout(() => {
 				setPaymentSuccess(true);
 				setIsProcessing(false);
