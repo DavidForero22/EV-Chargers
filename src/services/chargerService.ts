@@ -82,7 +82,7 @@ export interface Booking extends Charger {
 
 const STORAGE_KEY = "ev_bookings_v1";
 
-export const saveBooking = (charger: Charger): Booking => {
+export const saveBooking = (charger: Charger, customDate?: string): Booking => {
 	const existingJson = localStorage.getItem(STORAGE_KEY);
 	const existingBookings: Booking[] = existingJson
 		? JSON.parse(existingJson)
@@ -90,7 +90,7 @@ export const saveBooking = (charger: Charger): Booking => {
 
 	const newBooking: Booking = {
 		...charger,
-		bookingDate: new Date().toISOString(),
+		bookingDate: customDate || new Date().toISOString(),
 		transactionId: `RES-${Math.floor(Math.random() * 100000)
 			.toString()
 			.padStart(5, "0")}`,

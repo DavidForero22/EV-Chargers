@@ -17,10 +17,8 @@ import {
 } from "lucide-react";
 import { type Charger, saveBooking } from "../services/chargerService";
 
-// IMPORTANTE: Pon aquí tu Public Key de Stripe (empieza por pk_test_)
 const stripePromise = loadStripe("pk_test_TU_CLAVE_PUBLICA_AQUI");
 
-// Estilos personalizados para el input de tarjeta de Stripe
 const CARD_STYLE = {
 	style: {
 		base: {
@@ -33,14 +31,21 @@ const CARD_STYLE = {
 	},
 };
 
-// Formateador de moneda (199 -> 1,99 €)
 const formatPrice = (cents: number) =>
 	new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(
 		cents / 100,
 	);
 
-const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
+// Propiedad nueva: 'selectedDate'
+interface CheckoutFormProps {
+	charger: Charger;
+	selectedDate: string;
+	onClose: () => void;
+}
+
+const CheckoutForm: React.FC<CheckoutFormProps> = ({
 	charger,
+	selectedDate,
 	onClose,
 }) => {
 	const stripe = useStripe();
@@ -64,9 +69,6 @@ const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
 			return;
 		}
 
-		// 1. Validamos la tarjeta con Stripe
-		// En un entorno real, aquí enviarías un token al backend para hacer el cargo.
-		// Como estamos en modo prueba sin backend, validamos que la tarjeta sea correcta.
 		const { error, paymentMethod } = await stripe.createPaymentMethod({
 			type: "card",
 			card: cardElement,
@@ -76,9 +78,10 @@ const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
 			setError(error.message || "Error al procesar el pago.");
 			setIsProcessing(false);
 		} else {
-			console.log("Sucessful payment. ID:", paymentMethod.id);
-			console.log("Payment amount:", charger.bookingFee);
-			saveBooking(charger);
+			console.log("Successful payment. ID:", paymentMethod.id);
+
+			// Pasamos la fecha seleccionada al servicio de guardado
+			saveBooking(charger, selectedDate);
 
 			setTimeout(() => {
 				setPaymentSuccess(true);
@@ -88,6 +91,13 @@ const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
 	};
 
 	if (paymentSuccess) {
+		// Formatear fecha para mostrarla en el mensaje de éxito
+		const dateObj = new Date(selectedDate);
+		const dateStr =
+			dateObj.toLocaleDateString() +
+			" " +
+			dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
 		return (
 			<div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in zoom-in duration-300">
 				<div className="bg-emerald-100 p-4 rounded-full mb-4">
@@ -97,10 +107,10 @@ const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
 					¡Reserva Confirmada!
 				</h3>
 				<p className="text-slate-600 mb-1">
-					Has pagado {formatPrice(charger.bookingFee)} por reservar el punto.
+					Has reservado para el <strong>{dateStr}</strong>.
 				</p>
-				<p className="text-xs text-slate-400 mb-6 mt-2">
-					Usa el código #RES-{Math.floor(Math.random() * 10000)} al llegar.
+				<p className="text-sm text-slate-500 mb-6">
+					Coste de reserva: {formatPrice(charger.bookingFee)}
 				</p>
 				<button
 					onClick={onClose}
@@ -129,7 +139,6 @@ const CheckoutForm: React.FC<{ charger: Charger; onClose: () => void }> = ({
 				</div>
 			)}
 
-			{/* Resumen de costes */}
 			<div className="border-t border-slate-100 pt-4 mt-4 space-y-2">
 				<div className="flex justify-between text-sm text-slate-500">
 					<span>Precio estimado carga</span>
@@ -162,6 +171,14 @@ export const BookingModal: React.FC<{
 	charger: Charger;
 	onClose: () => void;
 }> = ({ charger, onClose }) => {
+	// Inicializar estado con la fecha/hora actual en formato ISO para el input (YYYY-MM-DDThh:mm)
+	// Se resta el offset de zona horaria para que salga la hora local correcta
+	const now = new Date();
+	now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+	const initialDate = now.toISOString().slice(0, 16);
+
+	const [bookingDate, setBookingDate] = useState(initialDate);
+
 	return (
 		<div
 			className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
@@ -191,29 +208,39 @@ export const BookingModal: React.FC<{
 
 				{/* Body */}
 				<div className="p-6 overflow-y-auto">
+					{/* Panel de Info y Selección de Fecha */}
 					<div className="flex gap-4 mb-6">
-						<div className="flex-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
+						<div className="w-1/3 bg-slate-50 p-3 rounded-lg border border-slate-200">
 							<label className="text-xs font-bold text-slate-500 uppercase block mb-1">
 								Potencia
 							</label>
 							<div className="flex items-center gap-2 text-slate-800 font-medium">
 								<Zap className="w-4 h-4 text-emerald-600" />
-								<span>{charger.power}</span>
+								<span className="text-sm">{charger.power}</span>
 							</div>
 						</div>
-						<div className="flex-1 bg-slate-50 p-3 rounded-lg border border-slate-200">
-							<label className="text-xs font-bold text-slate-500 uppercase block mb-1">
-								Inicio
+
+						{/* INPUT DE FECHA Y HORA */}
+						<div className="w-2/3 bg-slate-50 p-3 rounded-lg border border-slate-200 hover:border-emerald-400 transition-colors">
+							<label className="text-xs font-bold text-slate-500 uppercase block mb-1 flex items-center gap-1">
+								<Calendar className="w-3 h-3" /> Fecha de inicio
 							</label>
-							<div className="flex items-center gap-2 text-slate-800 font-medium">
-								<Clock className="w-4 h-4 text-emerald-600" />
-								<span>Ahora</span>
-							</div>
+							<input
+								type="datetime-local"
+								value={bookingDate}
+								onChange={(e) => setBookingDate(e.target.value)}
+								min={initialDate} // Evita seleccionar fechas pasadas
+								className="w-full bg-white border border-slate-300 rounded px-2 py-1 text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+							/>
 						</div>
 					</div>
 
 					<Elements stripe={stripePromise}>
-						<CheckoutForm charger={charger} onClose={onClose} />
+						<CheckoutForm
+							charger={charger}
+							selectedDate={bookingDate}
+							onClose={onClose}
+						/>
 					</Elements>
 				</div>
 			</div>
