@@ -222,7 +222,7 @@ export const BookingModal: React.FC<{
 
 						{/* INPUT DE FECHA Y HORA */}
 						<div className="w-2/3 bg-slate-50 p-3 rounded-lg border border-slate-200 hover:border-emerald-400 transition-colors">
-							<label className="text-xs font-bold text-slate-500 uppercase block mb-1 flex items-center gap-1">
+							<label className="text-xs font-bold text-slate-500 uppercase mb-1 flex items-center gap-1">
 								<Calendar className="w-3 h-3" /> Fecha de inicio
 							</label>
 							<input

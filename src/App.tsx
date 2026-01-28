@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero";
 import { Features } from "./components/Features";
 import { MapPage } from "./pages/MapPage";
 import { MyBookings } from "./pages/MyBookings";
+import { Statistics } from "./pages/Statistics";
 
 function App() {
 	return (
@@ -24,6 +25,7 @@ function App() {
 					/>
 					<Route path="/map" element={<MapPage />} />
 					<Route path="/bookings" element={<MyBookings />} />
+					<Route path="/statistics" element={<Statistics />} />
 				</Routes>
 
 				{/** Global Footer */}
