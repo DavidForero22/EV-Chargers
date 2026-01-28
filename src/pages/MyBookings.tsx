@@ -22,9 +22,9 @@ export const MyBookings: React.FC = () => {
 			<div className="container mx-auto px-4 max-w-4xl">
 				<div className="flex items-center justify-between mb-8">
 					<div>
-						<h1 className="text-3xl font-bold text-white mb-2">My Bookings</h1>
+						<h1 className="text-3xl font-bold text-white mb-2">Mis reservas</h1>
 						<p className="text-slate-400">
-							History of your reserved charging points.
+							Historial de tus puntos de recarga reservados.
 						</p>
 					</div>
 					{bookings.length > 0 && (
@@ -41,16 +41,16 @@ export const MyBookings: React.FC = () => {
 							<Zap className="w-8 h-8 text-slate-500" />
 						</div>
 						<h3 className="text-xl font-bold text-white mb-2">
-							No bookings yet
+							Aún no hay reservas.
 						</h3>
 						<p className="text-slate-400 mb-6">
-							Explore the map to find your first charger.
+							Explora el mapa para encontrar tu primer cargador.
 						</p>
 						<Link
 							to="/map"
 							className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold transition-all"
 						>
-							Go to Map <ArrowRight className="w-4 h-4" />
+							Ir al mapa <ArrowRight className="w-4 h-4" />
 						</Link>
 					</div>
 				) : (
@@ -65,7 +65,7 @@ export const MyBookings: React.FC = () => {
 									<div className="flex-1">
 										<div className="flex items-center gap-3 mb-2">
 											<span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-2 py-1 rounded border border-emerald-500/20">
-												CONFIRMED
+												CONFIRMADO
 											</span>
 											<span className="text-slate-500 text-xs font-mono tracking-wider">
 												#{booking.transactionId}
@@ -93,7 +93,7 @@ export const MyBookings: React.FC = () => {
 									<div className="flex flex-row md:flex-col justify-between items-end border-t md:border-t-0 md:border-l border-slate-700 pt-4 md:pt-0 md:pl-6 mt-4 md:mt-0 min-w-[140px]">
 										<div className="text-right">
 											<p className="text-xs text-slate-500 font-bold uppercase mb-1">
-												Booked on
+												Reservado el
 											</p>
 											<div className="flex items-center justify-end gap-2 text-slate-300">
 												<span>

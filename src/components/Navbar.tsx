@@ -44,13 +44,13 @@ export const Navbar: React.FC = () => {
                 {/** Desktop Navigation Links (Hidden on mobile) */}
                 <div className="hidden md:flex gap-8 text-sm font-medium">
                     <Link to="/map" className={getLinkClass('/map')}>
-                        Map
+                        Mapa
                     </Link>
                     <Link to="/bookings" className={getLinkClass('/bookings')}>
-                        My Reservations
+                        Mis Reservas
                     </Link>
                     <Link to="/statistics" className={getLinkClass('/statistics')}>
-                        Statistics
+                        Estadísticas
                     </Link>
                 </div>
 
@@ -79,7 +79,7 @@ export const Navbar: React.FC = () => {
                             className={`flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 ${getLinkClass('/map')}`}
                         >
                             <Map className="w-5 h-5" />
-                            Map
+                            Mapa
                         </Link>
 
                         <Link 
@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
                             className={`flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 ${getLinkClass('/bookings')}`}
                         >
                             <Bookmark className="w-5 h-5" />
-                            My Reservations
+                            Mis Reservas
                         </Link>
 
                         <Link 
@@ -97,7 +97,7 @@ export const Navbar: React.FC = () => {
                             className={`flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 ${getLinkClass('/statistics')}`}
                         >
                             <BarChart className="w-5 h-5" />
-                            Statistics
+                            Estadísticas
                         </Link>
                     </div>
                 </div>

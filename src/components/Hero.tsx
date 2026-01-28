@@ -16,16 +16,16 @@ export const Hero: React.FC = () => {
 
             <div className="container mx-auto px-4 text-center relative z-10">
                 <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                    Smart energy for your <br />
+                    Energía inteligente para tu <br />
 
                     {/** Gradient text effect using bg-clip-text */}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-400">
-                        Electric Vehicle
+                        Vehículo Eléctrico
                     </span>
                 </h1>
 
                 <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-                    Manage reservations, view charging points in real time, and monitor your energy consumption from a single platform.
+                    Gestione reservas, vea los puntos de recarga en tiempo real y controle su consumo energético desde una única plataforma.
                 </p>
 
                 <div className="flex flex-col md:flex-row justify-center gap-4 mb-16">
@@ -33,7 +33,7 @@ export const Hero: React.FC = () => {
                     {/** Primary Call-to-Action: Navigates to the Map Page */}
                     <Link to="/map" className="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold py-3 px-8 rounded-full transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
                         <MapPin className="w-5 h-5" />
-                        Search for Charging Points
+                        Buscar puntos de recarga
                     </Link>
                 </div>
             </div>

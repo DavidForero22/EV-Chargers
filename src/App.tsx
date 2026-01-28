@@ -30,7 +30,7 @@ function App() {
 
 				{/** Global Footer */}
 				<footer className="bg-slate-950 py-6 text-center text-slate-600 text-sm border-t border-slate-900 mt-auto">
-					<p>© 2026 EV Chargers. All rights reserved.</p>
+					<p>© 2026 EV Chargers. Todos los derechos reservados.</p>
 				</footer>
 			</div>
 		</BrowserRouter>

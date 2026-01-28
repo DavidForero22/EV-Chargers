@@ -67,11 +67,11 @@ export const MapPage: React.FC = () => {
 					<div>
 						<h1 className="text-3xl font-bold text-white flex items-center gap-3">
 							<MapIcon className="text-sky-400 w-8 h-8" />
-							Reserve your charging point
+							Reserva tu punto de recarga
 						</h1>
 						<p className="text-slate-400 mt-2 max-w-2xl">
-							Explore the charging points available in the Valencia network.
-							Select a marker to view details and make a reservation.
+							Explora los puntos de recarga disponibles en la red de Valencia.
+							Selecciona un marcador para ver los detalles y hacer una reserva.
 						</p>
 					</div>
 
@@ -82,7 +82,7 @@ export const MapPage: React.FC = () => {
 						</div>
 						<div>
 							<p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
-								Network Status
+								Estado de la red
 							</p>
 							<p className="text-xl font-bold text-white">
 								{loading
@@ -131,7 +131,7 @@ export const MapPage: React.FC = () => {
 												</div>
 												<span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 text-slate-500 font-bold">
 													{charger.outlets}{" "}
-													{charger.outlets > 1 ? "CONNECTORS" : "CONNECTOR"}
+													{charger.outlets > 1 ? "CONECTORES" : "CONECTOR"}
 												</span>
 											</div>
 
@@ -158,7 +158,7 @@ export const MapPage: React.FC = () => {
 												onClick={() => setSelectedCharger(charger)}
 												className="flex-1 bg-slate-900 hover:bg-emerald-600 hover:text-white text-slate-100 py-2 px-3 rounded-lg text-sm font-bold transition-all duration-200 shadow-md"
 											>
-												RESERVE
+												RESERVAR
 											</button>
 
 											{/** External Link to Google Maps Directions */}
@@ -167,7 +167,7 @@ export const MapPage: React.FC = () => {
 												target="_blank"
 												rel="noopener noreferrer"
 												className="flex items-center justify-center bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 py-2 px-3 rounded-lg transition-colors shadow-sm"
-												title="Get directions with Google Maps"
+												title="Obtenga indicaciones con Google Maps."
 											>
 												<Navigation className="w-4 h-4" />
 											</a>
@@ -182,7 +182,7 @@ export const MapPage: React.FC = () => {
 				{/** Data Source Attribution */}
 				<div className="mt-4 flex items-center gap-2 text-slate-500 text-sm">
 					<Info className="w-4 h-4" />
-					<span>Data provided by OpenData Valencia. Updated in real time.</span>
+					<span>Datos proporcionados por OpenData Valencia. Actualizados en tiempo real.</span>
 				</div>
 			</div>
 		</div>
