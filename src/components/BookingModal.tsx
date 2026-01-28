@@ -9,7 +9,6 @@ import {
 import {
 	X,
 	Calendar,
-	Clock,
 	CreditCard,
 	CheckCircle,
 	ShieldCheck,
@@ -17,7 +16,7 @@ import {
 } from "lucide-react";
 import { type Charger, saveBooking } from "../services/chargerService";
 
-const stripePromise = loadStripe("pk_test_TU_CLAVE_PUBLICA_AQUI");
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const CARD_STYLE = {
 	style: {
