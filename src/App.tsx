@@ -9,7 +9,7 @@ import { Statistics } from "./pages/Statistics";
 function App() {
 	return (
 		<BrowserRouter>
-			{/** Flex container ensures the Footer always stays at the bottom of the viewport */}
+			{/** El contenedor flexible garantiza que el pie de página permanezca siempre en la parte inferior de la ventana gráfica. */}
 			<div className="min-h-screen bg-slate-900 flex flex-col">
 				<Navbar />
 
@@ -28,7 +28,7 @@ function App() {
 					<Route path="/statistics" element={<Statistics />} />
 				</Routes>
 
-				{/** Global Footer */}
+				{/** Pie de página global */}
 				<footer className="bg-slate-950 py-6 text-center text-slate-600 text-sm border-t border-slate-900 mt-auto">
 					<p>© 2026 EV Chargers. Todos los derechos reservados.</p>
 				</footer>

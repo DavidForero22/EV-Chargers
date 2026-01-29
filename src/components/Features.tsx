@@ -2,18 +2,19 @@ import React from 'react';
 import { Map, Calendar, BarChart3, Bell } from 'lucide-react';
 
 /**
- * Displays a grid of key application capabilities (Map, Reservations, Reports, Alerts).
+ * Muestra una cuadrícula de las capacidades clave de la aplicación.
  */
 export const Features: React.FC = () => {
 
     /**
-     * Static configuration for feature cards.
-     * Contains the display data and specific Lucide icon for each item.
+     * Configuración estática de las tarjetas (Data-Driven UI).
+     * Si necesitas agregar una nueva funcionalidad, solo añades un objeto aquí.
      */
     const features = [
         {
             title: "Mapa interactivo",
             desc: "Encuentra cargadores cercanos, filtra por tipo de conector y comprueba la disponibilidad en tiempo real..",
+            // Se pasa el componente del icono directamente como propiedad
             icon: <Map className="w-8 h-8 text-emerald-400" />
         },
         {
@@ -40,16 +41,28 @@ export const Features: React.FC = () => {
                     Todo lo que necesitas para tu vehículo eléctrico
                 </h2>
 
-                {/* Responsive Grid Layout: 1 col (mobile) -> 2 cols (tablet) -> 4 cols (desktop) */}
+                {/* DISEÑO RESPONSIVO (GRID):
+                  - grid-cols-1: Móviles (1 columna).
+                  - md:grid-cols-2: Tablets (2 columnas).
+                  - lg:grid-cols-4: Escritorio (4 columnas).
+                  - gap-8: Espacio entre tarjetas.
+                */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    {/* Renderizado dinámico: Recorremos el array 'features' */}
                     {features.map((feature, index) => (
-                        /** * Feature Card.
-                         * Includes hover effects for border color and icon scaling.
+                        
+                        /**
+                         * Tarjeta Individual
                          */
                         <div key={index} className="bg-slate-800/30 p-6 rounded-2xl border border-slate-800 hover:bg-slate-800 hover:border-emerald-500/30 transition group">
+                            
+                            {/* Contenedor del Icono
+                            */}
                             <div className="mb-4 bg-slate-900 w-16 h-16 rounded-xl flex items-center justify-center group-hover:scale-110 transition duration-300">
                                 {feature.icon}
                             </div>
+                            
                             <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
                             <p className="text-slate-400 leading-relaxed text-sm">
                                 {feature.desc}

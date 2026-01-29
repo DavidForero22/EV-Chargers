@@ -18,6 +18,7 @@ import { type Charger, saveBooking } from "../services/chargerService";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
+// Estilos personalizados para el campo de tarjeta
 const CARD_STYLE = {
 	style: {
 		base: {
@@ -30,12 +31,13 @@ const CARD_STYLE = {
 	},
 };
 
+/**  Formatea el precio desde céntimos a euros */
 const formatPrice = (cents: number) =>
 	new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(
 		cents / 100,
 	);
 
-// Propiedad nueva: 'selectedDate'
+/** Props necesarias para el formulario de pago */
 interface CheckoutFormProps {
 	charger: Charger;
 	selectedDate: string;
@@ -49,13 +51,17 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 }) => {
 	const stripe = useStripe();
 	const elements = useElements();
+
+	// Estados principales del proceso de pago
 	const [isProcessing, setIsProcessing] = useState(false);
 	const [paymentSuccess, setPaymentSuccess] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
+	// Maneja el envío del formulario de pago
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
 
+		// Evita ejecutar si Stripe no está listo
 		if (!stripe || !elements) return;
 
 		setIsProcessing(true);
@@ -68,6 +74,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 			return;
 		}
 
+		// Crea el método de pago con la tarjeta introducida
 		const { error, paymentMethod } = await stripe.createPaymentMethod({
 			type: "card",
 			card: cardElement,
@@ -79,7 +86,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 		} else {
 			console.log("Successful payment. ID:", paymentMethod.id);
 
-			// Pasamos la fecha seleccionada al servicio de guardado
+			// Guarda la reserva junto con la fecha seleccionada
 			saveBooking(charger, selectedDate);
 
 			setTimeout(() => {
@@ -89,8 +96,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 		}
 	};
 
+	// Vista de éxito tras el pago
 	if (paymentSuccess) {
-		// Formatear fecha para mostrarla en el mensaje de éxito
 		const dateObj = new Date(selectedDate);
 		const dateStr =
 			dateObj.toLocaleDateString() +
@@ -121,6 +128,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 		);
 	}
 
+	// Formulario de pago
 	return (
 		<form onSubmit={handleSubmit} className="space-y-6">
 			<div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
@@ -170,8 +178,7 @@ export const BookingModal: React.FC<{
 	charger: Charger;
 	onClose: () => void;
 }> = ({ charger, onClose }) => {
-	// Inicializar estado con la fecha/hora actual en formato ISO para el input (YYYY-MM-DDThh:mm)
-	// Se resta el offset de zona horaria para que salga la hora local correcta
+	// Fecha/hora actual en formato compatible con datetime-local
 	const now = new Date();
 	now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
 	const initialDate = now.toISOString().slice(0, 16);
