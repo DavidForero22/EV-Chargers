@@ -17,10 +17,6 @@ import iconMarker from "leaflet/dist/images/marker-icon.png";
 import iconRetina from "leaflet/dist/images/marker-icon-2x.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-/**
- * Fix for Leaflet's default icon assets not loading correctly in React/Webpack environments.
- * Manually overrides the icon configuration.
- */
 const customIcon = L.icon({
 	iconRetinaUrl: iconRetina,
 	iconUrl: iconMarker,
@@ -31,8 +27,8 @@ const customIcon = L.icon({
 });
 
 /**
- * Displays an interactive map of Valencia with EV charging points.
- * Features include: real-time data fetching, custom marker popups, and external navigation links.
+ * Muestra un mapa interactivo de Valencia con puntos de recarga para vehículos eléctricos.
+ * Entre sus características se incluyen: obtención de datos en tiempo real, ventanas emergentes con marcadores personalizados y enlaces de navegación externos.
  */
 export const MapPage: React.FC = () => {
 	const [chargers, setChargers] = useState<Charger[]>([]);
@@ -40,7 +36,7 @@ export const MapPage: React.FC = () => {
 	const [selectedCharger, setSelectedCharger] = useState<Charger | null>(null);
 
 	/**
-	 * Fetches charging station data from the open data API on component mount.
+	 * Obtiene los datos de la estación de carga de la API de datos abiertos en el montaje de componentes.
 	 */
 	useEffect(() => {
 		const loadData = async () => {
@@ -62,7 +58,7 @@ export const MapPage: React.FC = () => {
 			)}
 
 			<div className="container mx-auto px-4 py-8 h-full flex flex-col">
-				{/** Page Header & Status Dashboard */}
+				{/** Encabezado de página y panel de estado */}
 				<div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
 					<div>
 						<h1 className="text-3xl font-bold text-white flex items-center gap-3">
@@ -75,7 +71,7 @@ export const MapPage: React.FC = () => {
 						</p>
 					</div>
 
-					{/** Network Status Indicator */}
+					{/** Indicador de estado de la red */}
 					<div className="bg-slate-800 border border-slate-700 p-4 rounded-xl flex items-center gap-4 shadow-lg min-w-[250px]">
 						<div className="bg-emerald-500/10 p-3 rounded-lg">
 							<Zap className="w-6 h-6 text-emerald-400" />
@@ -93,7 +89,7 @@ export const MapPage: React.FC = () => {
 					</div>
 				</div>
 
-				{/** Map Container */}
+				{/** Contenedor de mapas */}
 				<div className="rounded-2xl overflow-hidden border border-slate-700 shadow-2xl relative z-0">
 					<MapContainer
 						center={[39.4699, -0.3763]}
@@ -101,7 +97,7 @@ export const MapPage: React.FC = () => {
 						scrollWheelZoom={true}
 						style={{ height: "600px", width: "100%" }}
 					>
-						{/** Dark Mode Map Tiles (CartoDB) */}
+						{/** Mosaicos de mapa en modo oscuro (CartoDB) */}
 						<TileLayer
 							attribution="© CartoDB"
 							url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
@@ -119,9 +115,9 @@ export const MapPage: React.FC = () => {
 											{charger.address}
 										</h3>
 
-										{/** Charger Specifications */}
+										{/** Especificaciones del cargador */}
 										<div className="space-y-3 mb-4">
-											{/* Power Output & Outlet Count */}
+											{/* Potencia de salida y número de salidas */}
 											<div className="flex items-center justify-between text-slate-700">
 												<div className="flex items-center gap-2">
 													<BatteryCharging className="w-4 h-4 text-emerald-600" />
@@ -135,7 +131,7 @@ export const MapPage: React.FC = () => {
 												</span>
 											</div>
 
-											{/* Connector Type */}
+											{/* Tipo de conector */}
 											<div className="flex items-center gap-2 text-slate-700">
 												<Zap className="w-4 h-4 text-blue-600" />
 												<span className="text-sm font-medium">
@@ -143,7 +139,7 @@ export const MapPage: React.FC = () => {
 												</span>
 											</div>
 
-											{/* Pricing */}
+											{/* Precios */}
 											<div className="flex items-center gap-2 text-slate-700">
 												<Euro className="w-4 h-4 text-amber-500" />
 												<span className="text-sm font-medium">
@@ -152,7 +148,7 @@ export const MapPage: React.FC = () => {
 											</div>
 										</div>
 
-										{/** Action Buttons */}
+										{/** Botones de acción */}
 										<div className="flex gap-2 mt-3 pt-2 border-t border-slate-100">
 											<button
 												onClick={() => setSelectedCharger(charger)}
@@ -161,7 +157,7 @@ export const MapPage: React.FC = () => {
 												RESERVAR
 											</button>
 
-											{/** External Link to Google Maps Directions */}
+											{/** Enlace externo a las indicaciones de Google Maps */}
 											<a
 												href={`https://www.google.com/maps/dir/?api=1&destination=${charger.coordinates[0]},${charger.coordinates[1]}`}
 												target="_blank"
@@ -179,7 +175,7 @@ export const MapPage: React.FC = () => {
 					</MapContainer>
 				</div>
 
-				{/** Data Source Attribution */}
+				{/** Atribución de la fuente de datos */}
 				<div className="mt-4 flex items-center gap-2 text-slate-500 text-sm">
 					<Info className="w-4 h-4" />
 					<span>Datos proporcionados por OpenData Valencia. Actualizados en tiempo real.</span>

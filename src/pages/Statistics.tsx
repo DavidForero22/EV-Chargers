@@ -187,10 +187,6 @@ export const Statistics: React.FC = () => {
 										tickFormatter={(value) => `${value}€`}
 									/>
 
-									{/** * CORRECCIÓN AQUÍ:
-									 * Cambiamos 'value: number' por 'value: any' para evitar el conflicto de tipos
-									 * con Recharts, ya que value puede ser number, string o array.
-									 */}
 									<Tooltip
 										contentStyle={{
 											backgroundColor: "#1e293b",

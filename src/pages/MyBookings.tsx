@@ -10,7 +10,9 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+// Componente principal para gestionar el historial de reservas
 export const MyBookings: React.FC = () => {
+	// Inicializamos 'bookings' como un array vacío para evitar errores de renderizado inicial.
 	const [bookings, setBookings] = useState<Booking[]>([]);
 
 	useEffect(() => {
@@ -20,6 +22,7 @@ export const MyBookings: React.FC = () => {
 	return (
 		<div className="flex-1 bg-slate-900 py-12">
 			<div className="container mx-auto px-4 max-w-4xl">
+				{/* Cabecera con Contador Condicional */}
 				<div className="flex items-center justify-between mb-8">
 					<div>
 						<h1 className="text-3xl font-bold text-white mb-2">Mis reservas</h1>
@@ -27,6 +30,10 @@ export const MyBookings: React.FC = () => {
 							Historial de tus puntos de recarga reservados.
 						</p>
 					</div>
+
+					{/* RENDERIZADO CONDICIONAL (Short-circuit): 
+                        Solo mostramos la etiqueta "Total" si realmente hay reservas (> 0).
+                    */}
 					{bookings.length > 0 && (
 						<div className="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700">
 							<span className="text-slate-400 text-sm">Total: </span>
@@ -35,7 +42,12 @@ export const MyBookings: React.FC = () => {
 					)}
 				</div>
 
+				{/* LÓGICA PRINCIPAL DE UI (Ternario) 
+                    
+                    Si no hay datos, mostramos "Empty State". Si hay datos, mostramos la lista.
+                */}
 				{bookings.length === 0 ? (
+					// --- CASO A: ESTADO VACÍO ---
 					<div className="text-center py-20 bg-slate-800/30 rounded-3xl border border-slate-700 border-dashed">
 						<div className="bg-slate-800 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
 							<Zap className="w-8 h-8 text-slate-500" />
@@ -46,6 +58,7 @@ export const MyBookings: React.FC = () => {
 						<p className="text-slate-400 mb-6">
 							Explora el mapa para encontrar tu primer cargador.
 						</p>
+						{/* Botón de llamada a la acción (CTA) para redirigir al usuario */}
 						<Link
 							to="/map"
 							className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold transition-all"
@@ -54,7 +67,9 @@ export const MyBookings: React.FC = () => {
 						</Link>
 					</div>
 				) : (
+					// --- CASO B: LISTA DE RESERVAS ---
 					<div className="space-y-4">
+						{/* Iteramos sobre el array de datos para crear las tarjetas */}
 						{bookings.map((booking) => (
 							<div
 								key={booking.transactionId}
@@ -89,12 +104,13 @@ export const MyBookings: React.FC = () => {
 										</div>
 									</div>
 
-									{/* Fecha y Precio */}
+									{/* Fecha y Hora */}
 									<div className="flex flex-row md:flex-col justify-between items-end border-t md:border-t-0 md:border-l border-slate-700 pt-4 md:pt-0 md:pl-6 mt-4 md:mt-0 min-w-[140px]">
 										<div className="text-right">
 											<p className="text-xs text-slate-500 font-bold uppercase mb-1">
 												Reservado el
 											</p>
+											{/* Convertimos el string ISO a fecha local legible */}
 											<div className="flex items-center justify-end gap-2 text-slate-300">
 												<span>
 													{new Date(booking.bookingDate).toLocaleDateString()}
